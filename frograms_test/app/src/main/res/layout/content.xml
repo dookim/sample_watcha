@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="10dp"
+    >
+
+
+    <ImageView
+        android:id="@+id/content_imageview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout android:orientation="horizontal"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+        >
+
+        <LinearLayout android:orientation="vertical"
+                      android:layout_width="0px"
+                      android:layout_height="match_parent"
+                      android:layout_weight="3"
+                      android:gravity="left|center_vertical"
+            >
+            <TextView
+                android:text="title"
+                android:id="@+id/content_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp"
+
+
+                />
+
+            <TextView
+                android:textSize="10sp"
+                android:layout_marginLeft="10dp"
+                android:text="회원님의 예상별점이 높은 시사회"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="0px"
+                      android:layout_height="match_parent"
+                      android:layout_weight="1"
+                      android:gravity="center"
+            >
+            <TextView
+                android:textSize="10sp"
+                android:textColor="@android:color/holo_red_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="응모하기"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
