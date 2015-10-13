@@ -24,7 +24,7 @@ import data.CardsContainer;
  */
 public class ChildFragment1 extends Fragment {
 
-    List<Card> mCards = new ArrayList<>();
+    List<Card> mCards;
     SimpleBaseAdapter mFrogramsBaseAdapter;
 
     @Bind(R.id.listview)
@@ -36,12 +36,11 @@ public class ChildFragment1 extends Fragment {
         Log.e("dookim", "onCreateView1");
         View rootView = inflater.inflate(R.layout.child_fragment, container, false);
         ButterKnife.bind(this, rootView);
-
-        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+        mCards = new ArrayList<>();
+        CardsContainer.getCardsOnBackground(new CardsContainer.OnCardsReadListener() {
             @Override
-            public void onCompleted(CardsContainer cardsContainer) {
-                mCards.clear();
-                mCards.addAll(cardsContainer.clone());
+            public void onCompleted(List<Card> cards) {
+                mCards.addAll(cards);
                 mFrogramsBaseAdapter.notifyDataSetChanged();
             }
 

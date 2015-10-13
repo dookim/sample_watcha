@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -25,7 +27,7 @@ import data.CardsContainer;
  */
 public class ChildFragment4 extends Fragment {
 
-    List<Card> mCards = new ArrayList<>();
+    List<Card> mCards;
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -38,12 +40,13 @@ public class ChildFragment4 extends Fragment {
         Log.e("dookim", "onCreateView4");
         View rootView = inflater.inflate(R.layout.child_fragment2, container, false);
         ButterKnife.bind(this, rootView);
+        mCards = new ArrayList<>();
 
-        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+        CardsContainer.getCardsOnBackground(new CardsContainer.OnCardsReadListener() {
             @Override
-            public void onCompleted(CardsContainer cardsContainer) {
-                mCards.clear();
-                mCards.addAll(cardsContainer.clone());
+            public void onCompleted(List<Card> cards) {
+
+                mCards.addAll(cards);
                 mSimpleRecyclerAdapter.notifyDataSetChanged();
             }
 

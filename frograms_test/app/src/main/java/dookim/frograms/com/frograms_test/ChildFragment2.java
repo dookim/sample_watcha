@@ -32,25 +32,25 @@ public class ChildFragment2 extends Fragment {
     RecyclerView mRecyclerView;
 
     SimpleRecyclerAdapter mSimpleRecyclerAdapter;
-    List<Card> mCards = new ArrayList<>();
+    List<Card> mCards;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.e("dookim", "onCreateView2");
         View rootView = inflater.inflate(R.layout.child_fragment2, container, false);
         ButterKnife.bind(this, rootView);
+        mCards = new ArrayList<>();
 
-        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+        CardsContainer.getCardsOnBackground(new CardsContainer.OnCardsReadListener() {
             @Override
-            public void onCompleted(CardsContainer cardsContainer) {
-                mCards.clear();
-                mCards.addAll(cardsContainer.clone());
-                Collections.sort(mCards, new Comparator<Card>() {
+            public void onCompleted(List<Card> cards) {
+                Collections.sort(cards, new Comparator<Card>() {
                     @Override
                     public int compare(Card card, Card card2) {
                         return card.type.compareTo(card2.type);
                     }
                 });
+                mCards.addAll(cards);
                 mSimpleRecyclerAdapter.notifyDataSetChanged();
             }
 

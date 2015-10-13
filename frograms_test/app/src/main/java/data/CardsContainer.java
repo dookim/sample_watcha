@@ -55,9 +55,9 @@ public class CardsContainer {
 
     /**
      * cardcontiner를 생성하는 부분은 io가 발생하므로 background에서 비동기적으로 가져오는 부분
-     * @param onCardContainerCompleted
+     * @param onCardsReadListener
      */
-    public static void getCardContainerOnBackground(final OnCardContainerCompleted onCardContainerCompleted) {
+    public static void getCardsOnBackground(final OnCardsReadListener onCardsReadListener) {
         mExecutorService.submit(new Runnable() {
             @Override
             public void run() {
@@ -66,14 +66,14 @@ public class CardsContainer {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            onCardContainerCompleted.onCompleted(mCardsContainer);
+                            onCardsReadListener.onCompleted(mCardsContainer.clone());
                         }
                     });
                 } catch (final IOException e) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            onCardContainerCompleted.onError(e);
+                            onCardsReadListener.onError(e);
                         }
                     });
 
@@ -82,8 +82,8 @@ public class CardsContainer {
         });
     }
 
-    public interface OnCardContainerCompleted {
-        public void onCompleted(CardsContainer cardsContainer);
+    public interface OnCardsReadListener {
+        public void onCompleted(List<Card> cards);
         public void onError(Exception e);
     }
 

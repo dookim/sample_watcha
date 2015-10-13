@@ -25,7 +25,7 @@ import data.CardsContainer;
  * Created by dookim on 10/8/15.
  */
 public class ChildFragment3 extends Fragment{
-    List<Card> mCards = new ArrayList<>();
+    List<Card> mCards;
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -37,12 +37,12 @@ public class ChildFragment3 extends Fragment{
         Log.e("dookim", "onCreateView3");
         View rootView = inflater.inflate(R.layout.child_fragment2, container, false);
         ButterKnife.bind(this, rootView);
+        mCards = new ArrayList<>();
 
-        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+        CardsContainer.getCardsOnBackground(new CardsContainer.OnCardsReadListener() {
             @Override
-            public void onCompleted(CardsContainer cardsContainer) {
-                mCards.clear();
-                mCards.addAll(cardsContainer.clone());
+            public void onCompleted(List<Card> cards) {
+                mCards.addAll(cards);
                 mSimpleRecyclerAdapter.notifyDataSetChanged();
             }
 
