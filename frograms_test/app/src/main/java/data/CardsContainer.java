@@ -53,6 +53,10 @@ public class CardsContainer {
     private static ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
     private static Handler handler = new Handler(Looper.getMainLooper());
 
+    /**
+     * cardcontiner를 생성하는 부분은 io가 발생하므로 background에서 비동기적으로 가져오는 부분
+     * @param onCardContainerCompleted
+     */
     public static void getCardContainerOnBackground(final OnCardContainerCompleted onCardContainerCompleted) {
         mExecutorService.submit(new Runnable() {
             @Override
