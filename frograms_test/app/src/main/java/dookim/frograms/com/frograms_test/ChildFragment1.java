@@ -40,6 +40,7 @@ public class ChildFragment1 extends Fragment {
         CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
             @Override
             public void onCompleted(CardsContainer cardsContainer) {
+                mCards.clear();
                 mCards.addAll(cardsContainer.clone());
                 mFrogramsBaseAdapter.notifyDataSetChanged();
             }

@@ -43,6 +43,7 @@ public class ChildFragment2 extends Fragment {
         CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
             @Override
             public void onCompleted(CardsContainer cardsContainer) {
+                mCards.clear();
                 mCards.addAll(cardsContainer.clone());
                 Collections.sort(mCards, new Comparator<Card>() {
                     @Override

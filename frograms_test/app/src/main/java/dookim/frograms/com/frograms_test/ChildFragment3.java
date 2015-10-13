@@ -41,6 +41,7 @@ public class ChildFragment3 extends Fragment{
         CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
             @Override
             public void onCompleted(CardsContainer cardsContainer) {
+                mCards.clear();
                 mCards.addAll(cardsContainer.clone());
                 mSimpleRecyclerAdapter.notifyDataSetChanged();
             }
