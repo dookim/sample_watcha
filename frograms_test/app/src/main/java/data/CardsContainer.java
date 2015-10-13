@@ -1,8 +1,13 @@
 package data;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import util.GsonConverter;
 import util.SimpleJsonMockupData;
@@ -44,5 +49,38 @@ public class CardsContainer {
         }
         return mCardsContainer;
      }
+
+    private static ExecutorService mExecutorService = Executors.newSingleThreadExecutor();
+    private static Handler handler = new Handler(Looper.getMainLooper());
+
+    public static void getCardContainerOnBackground(final OnCardContainerCompleted onCardContainerCompleted) {
+        mExecutorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    mCardsContainer = getInstance();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onCardContainerCompleted.onCompleted(mCardsContainer);
+                        }
+                    });
+                } catch (final IOException e) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onCardContainerCompleted.onError(e);
+                        }
+                    });
+
+                }
+            }
+        });
+    }
+
+    public interface OnCardContainerCompleted {
+        public void onCompleted(CardsContainer cardsContainer);
+        public void onError(Exception e);
+    }
 
 }

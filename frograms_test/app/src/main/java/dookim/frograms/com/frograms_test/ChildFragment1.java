@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import data.CardsContainer;
  */
 public class ChildFragment1 extends Fragment {
 
-    List<Card> mCards;
+    List<Card> mCards = new ArrayList<>();
     SimpleBaseAdapter mFrogramsBaseAdapter;
 
     @Bind(R.id.listview)
@@ -37,13 +37,19 @@ public class ChildFragment1 extends Fragment {
         View rootView = inflater.inflate(R.layout.child_fragment, container, false);
         ButterKnife.bind(this, rootView);
 
-        try {
-            //deepcopy를 통해 cards들을 가져온다.
-            mCards = CardsContainer.getInstance().clone();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mCards = new ArrayList<>();
-        }
+        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+            @Override
+            public void onCompleted(CardsContainer cardsContainer) {
+                mCards.addAll(cardsContainer.clone());
+                mFrogramsBaseAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mFrogramsBaseAdapter = new SimpleBaseAdapter(mCards, getActivity());
         mListView.setAdapter(mFrogramsBaseAdapter);
 

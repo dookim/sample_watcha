@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ import data.CardsContainer;
  */
 public class ChildFragment4 extends Fragment {
 
-    List<Card> mCards;
+    List<Card> mCards = new ArrayList<>();
 
     @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
@@ -39,12 +39,18 @@ public class ChildFragment4 extends Fragment {
         View rootView = inflater.inflate(R.layout.child_fragment2, container, false);
         ButterKnife.bind(this, rootView);
 
-        try {
-            mCards = CardsContainer.getInstance().clone();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mCards = new ArrayList<>();
-        }
+        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+            @Override
+            public void onCompleted(CardsContainer cardsContainer) {
+                mCards.addAll(cardsContainer.clone());
+                mSimpleRecyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mSimpleRecyclerAdapter = new StaggeredRecyclerAdapter(mCards, getActivity());
 

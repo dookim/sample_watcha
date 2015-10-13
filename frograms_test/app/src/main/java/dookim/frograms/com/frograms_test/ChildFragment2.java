@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +32,7 @@ public class ChildFragment2 extends Fragment {
     RecyclerView mRecyclerView;
 
     SimpleRecyclerAdapter mSimpleRecyclerAdapter;
-    List<Card> mCards;
+    List<Card> mCards = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,12 +40,19 @@ public class ChildFragment2 extends Fragment {
         View rootView = inflater.inflate(R.layout.child_fragment2, container, false);
         ButterKnife.bind(this, rootView);
 
-        try {
-            mCards = CardsContainer.getInstance().clone();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mCards = new ArrayList<>();
-        }
+        CardsContainer.getCardContainerOnBackground(new CardsContainer.OnCardContainerCompleted() {
+            @Override
+            public void onCompleted(CardsContainer cardsContainer) {
+                mCards.addAll(cardsContainer.clone());
+                mSimpleRecyclerAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Collections.sort(mCards, new Comparator<Card>() {
             @Override
             public int compare(Card card, Card card2) {
