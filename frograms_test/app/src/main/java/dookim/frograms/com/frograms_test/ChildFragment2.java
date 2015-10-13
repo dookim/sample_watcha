@@ -44,6 +44,12 @@ public class ChildFragment2 extends Fragment {
             @Override
             public void onCompleted(CardsContainer cardsContainer) {
                 mCards.addAll(cardsContainer.clone());
+                Collections.sort(mCards, new Comparator<Card>() {
+                    @Override
+                    public int compare(Card card, Card card2) {
+                        return card.type.compareTo(card2.type);
+                    }
+                });
                 mSimpleRecyclerAdapter.notifyDataSetChanged();
             }
 
@@ -53,12 +59,7 @@ public class ChildFragment2 extends Fragment {
             }
         });
 
-        Collections.sort(mCards, new Comparator<Card>() {
-            @Override
-            public int compare(Card card, Card card2) {
-                return card.type.compareTo(card2.type);
-            }
-        });
+
         mSimpleRecyclerAdapter = new SimpleRecyclerAdapter(mCards, getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
